@@ -13,7 +13,7 @@ start(Port, _Ssl = false) when is_integer(Port) ->
 accept_loop(ListenSock) ->
     case gen_tcp:accept(ListenSock) of
         {ok, Sock} ->
-            Opts = [], %% passed through to the stream callback module
+            Opts = [{spdy_version, 3}], %% passed through to the stream callback module
             {ok, Pid} = espdy_session:start_link(Sock, gen_tcp, espdy_stream_http, Opts),
             %% You must assign controlling process then send shoot, to notify
             %% espdy_session that it now owns the socket.
